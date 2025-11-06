@@ -1,0 +1,110 @@
+! This file demonstrates MLM jet matching in Pythia.
+
+! Number of generated events.
+Main:numberOfEvents         = 10000
+
+! Use events from LHEF input.
+Beams:frameType             = 4
+
+! Be more forgiving with momentum mismatches.
+Check:epTolErr              = 2e-2
+
+! Jet matching settings for MLM.
+! Note: Some of these settings might be read
+! directly from the input LHE file.
+JetMatching:merge           = on
+JetMatching:scheme          = 1
+JetMatching:setMad          = off
+JetMatching:qCut            = 40.0
+JetMatching:coneRadius      = 1.0
+JetMatching:etaJetMax       = 10.0
+JetMatching:nJetMax         = 2
+JetMatching:doShowerKt      = on
+
+! Optionally write HepMC events.
+! (Pythia has to be configured with --with-hepmc3 or --with-rivet).
+! Main:HepMC                  = on
+! HepMC:output                = main164mlm.hepmc
+
+! Subruns for MLM jet matching
+Main:numberOfSubruns        = 1
+Main:subrun                 = 0
+Beams:LHEF = /home/wei/Fast_run/2025/EMJ/test/lam8d3/Output/main164mlm/run1/1.lhe
+
+
+!---------------------------------------------------------------
+! 1) Settings that will be used in a main program.
+Main:numberOfEvents = 10000.0
+Main:timesAllowErrors = 3          ! abort run after this many flawed events
+
+! 2) Settings related to output in init(), next() and stat().
+Init:showChangedSettings = on      ! list changed settings
+Init:showAllSettings = off         ! list all settings
+Init:showChangedParticleData = on  ! list changed particle data
+Init:showAllParticleData = off     ! list all particle data
+Next:numberCount = 1000            ! print message every n events
+Next:numberShowLHA = 1             ! print LHA information n times
+Next:numberShowInfo = 1            ! print event information n times
+Next:numberShowProcess = 1         ! print process record n times
+Next:numberShowEvent = 1           ! print event record n times
+Stat:showPartonLevel = on          ! additional statistics on MPI
+
+! 3) Beam parameter settings. Values below agree with default ones.
+!Beams:idA = 2212                   ! first beam, p = 2212, pbar = -2212
+!Beams:idB = 2212                   ! second beam, p = 2212, pbar = -2212
+!Beams:eCM = 13000.                 ! CM energy of collision
+
+! 7) Set mass of dark quark.
+! this is Lambda + current quark mass
+4900101:m0 = 2.6983954578512392
+
+! 8) Set gauge group and number of flavours
+! caution: user should not use Nc=2 or Nf=1 without consulting theory experts.
+HiddenValley:Ngauge = 5.0
+HiddenValley:Nflav = 5.0
+HiddenValley:separateFlav  = off
+
+! 9) Set other darksector parmaters, must setHiddenValley:alphaOrder = 1.0
+HiddenValley:setLambda = on
+HiddenValley:Lambda = 2.66666
+HiddenValley:FSR = on
+HiddenValley:fragment = on
+HiddenValley:alphaOrder = 1
+HiddenValley:probVector = 0.474186764678108
+
+! Hadronization parameters
+HiddenValley:bmqv2 = 0.087
+HiddenValley:aLund = 0.3
+HiddenValley:sigmamqv = 0.92
+! HiddenValley:bLund = 0.087
+! HiddenValley:aLund = 0.3
+! HiddenValley:sigmaLund = 0.92
+
+! 10) Set masses and branching ratios of spin-1 and spin-0 mesons
+! For now this treats flavor singlets on the same footing as flavor adjoint multiplets, this is not entirely consistent.
+! adjustment to flavor singlet is possible but only with separateFlav=on
+4900111:m0 = 1.5999959999999998
+4900211:m0 = 1.5999959999999998
+4900113:m0 = 6.6932634790720735
+4900213:m0 = 6.6932634790720735
+
+! Declare additional stable state to emulate invisible fraction
+53:m0 = 0.0
+53:isResonance = false
+53:mayDecay = off
+
+
+! All spin-1 mesons decay to spin-0 mesons
+
+4900113:mayDecay = on
+4900113:oneChannel = 1 1 100 4900211 -4900211
+
+4900213:mayDecay = on
+4900213:oneChannel = 1 1 100 4900111 4900211
+
+4900111:tau0 = 10.0
+4900211:mayDecay = off
+4900111:mayDecay = on
+4900111:onechannel = 1  0.5 91 -1 1
+4900111:addchannel = 1  0.5 91 -2 2
+4900111:addchannel = 1  0.0 100 -53 53 
