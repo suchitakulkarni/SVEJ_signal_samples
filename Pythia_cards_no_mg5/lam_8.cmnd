@@ -2,6 +2,8 @@
 !---------------------------------------------------------------
 ! please note that this file contains the wrong hadronization parameters,
 ! for using correct hadronization parameters pythia8.312 xml file should be modified
+! Only diagonal pions decay, the off-diagonal pions are stable
+
 ! 1) Settings that will be used in a main program.
 
 
@@ -73,7 +75,7 @@ HiddenValley:probVector = 0.4741867646781081
 4900213:mayDecay = on
 4900213:oneChannel = 1 1 100 4900111 4900211
 
-4900111:tau0 = 10.0
+4900111:tau0 = 10.0 # add lifetime for diagonal pions
 4900211:mayDecay = off
 4900111:mayDecay = on
 4900111:onechannel = 1  0.5 91 -1 1
