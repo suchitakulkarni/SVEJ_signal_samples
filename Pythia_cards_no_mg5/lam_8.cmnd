@@ -1,0 +1,81 @@
+! file to be used with pythia8.312
+!---------------------------------------------------------------
+! please note that this file contains the wrong hadronization parameters,
+! for using correct hadronization parameters pythia8.312 xml file should be modified
+! 1) Settings that will be used in a main program.
+
+
+Main:numberOfEvents = 10000.0
+Main:timesAllowErrors = 3          ! abort run after this many flawed events
+
+! 2) Settings related to output in init(), next() and stat().
+Init:showChangedSettings = on      ! list changed settings
+Init:showAllSettings = off         ! list all settings
+Init:showChangedParticleData = on  ! list changed particle data
+Init:showAllParticleData = off     ! list all particle data
+Next:numberCount = 1000            ! print message every n events
+Next:numberShowLHA = 1             ! print LHA information n times
+Next:numberShowInfo = 1            ! print event information n times
+Next:numberShowProcess = 1         ! print process record n times
+Next:numberShowEvent = 1           ! print event record n times
+Stat:showPartonLevel = on          ! additional statistics on MPI
+
+! 3) Beam parameter settings. Values below agree with default ones.
+Beams:idA = 2212                   ! first beam, p = 2212, pbar = -2212
+Beams:idB = 2212                   ! second beam, p = 2212, pbar = -2212
+Beams:eCM = 14000.                 ! CM energy of collision
+
+! 4) Turn on the production process.
+HiddenValley:ffbar2Zv = on
+4900023:m0 = 2000
+4900023:mMin = 1980
+4900023:mMax = 2220
+4900023:mWidth = 20
+4900023:doForceWidth = on
+
+
+! 5) Set mass of dark quark.
+! this is Lambda + current quark mass
+4900101:m0 = 24.285619834710744
+
+! 6) Set gauge group and number of flavours
+! caution: user should not use Nc=2 or Nf=1 without consulting theory experts.
+HiddenValley:Ngauge = 5.0
+HiddenValley:Nflav = 5.0
+HiddenValley:separateFlav  = off
+
+! 7) Set other darksector parmaters, must setHiddenValley:alphaOrder = 1.0
+HiddenValley:setLambda = on
+HiddenValley:Lambda = 24.0
+HiddenValley:FSR = on
+HiddenValley:fragment = on
+HiddenValley:alphaOrder = 1
+HiddenValley:probVector = 0.4741867646781081
+
+! 8) Set masses and branching ratios of spin-1 and spin-0 mesons
+! For now this treats flavor singlets on the same footing as flavor adjoint multiplets, this is not entirely consistent.
+! adjustment to flavor singlet is possible but only with separateFlav=on
+4900111:m0 = 14.399999999999999
+4900211:m0 = 14.399999999999999
+4900113:m0 = 60.23952191045344
+4900213:m0 = 60.23952191045344
+
+! Declare additional stable state to emulate invisible fraction
+53:m0 = 0.0
+53:isResonance = false
+53:mayDecay = off
+
+! All spin-1 mesons decay to spin-0 mesons
+
+4900113:mayDecay = on
+4900113:oneChannel = 1 1 100 4900211 -4900211
+
+4900213:mayDecay = on
+4900213:oneChannel = 1 1 100 4900111 4900211
+
+4900111:tau0 = 10.0
+4900211:mayDecay = off
+4900111:mayDecay = on
+4900111:onechannel = 1  0.5 91 -1 1
+4900111:addchannel = 1  0.5 91 -2 2
+4900111:addchannel = 1  0.0 100 -53 53 
